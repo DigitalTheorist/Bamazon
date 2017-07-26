@@ -1,0 +1,23 @@
+insert into products (id, product_name, department_name, price, stock_quantity)
+values
+(1, 'gold pan', 'outdoors', 10, 5),
+(2, 'shovel', 'tools', 5, 10),
+(3, 'straw hat', 'clothing', 7, 15),
+(4, 'boots', 'clothing', 15, 12),
+(5, 'backpack', 'outdoors', 25, 6),
+(6, 'protein bars', 'foods', 2, 25),
+(7, 'bathing suit', 'clothing', 18, 10),
+(8, 'binoculars', 'outdoors', 50, 20),
+(9, 'beer', 'foods', 18, 3),
+(10, 'knife', 'tools', 30, 28);
+
+create table products (
+	id INTEGER(11) AUTO_INCREMENT NOT NULL,
+	product_name VARCHAR(30) NOT NULL,
+	department_name VARCHAR(30) NOT NULL,
+	price INTEGER(3) NOT NULL,
+	stock_quantity INTEGER(4) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+select * from products;
