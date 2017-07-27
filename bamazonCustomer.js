@@ -44,28 +44,29 @@ function orderProduct() {
   inquirer.prompt([
     {
       name: "product",
-      message: "Enter the product ID of the product you'd like to order."
+      message: "Enter the product id of the product you'd like to order."
     }, {
       name: "quantity",
       message: "How many units would you like to order?"
     }
   ]).then(function(answers) {
 
-    console.log("product ordered " + answers.product);
-    console.log("quantity ordered " + answers.quantity);
-
+    // make modular function(S)???
     var quantityQuery
+    var priceQuery
 
-    var stockQuery = con.query('SELECT stock_quantity FROM products WHERE id = ?;', [answers.product], function(err, res) {
+    var stockQuery = con.query('SELECT stock_quantity, price FROM products WHERE id = ?;', [answers.product], function(err, res) {
         if (err) throw err;
+        priceQuery = (res[0].price);
+        // console.log(priceQuery + " priceQuery")
+        quantityQuery = (res[0].stock_quantity);
+        // console.log(quantityQuery);
 
-        quantityQuery = (res[0].stock_quantity); // returns number only from stock_quantity (need typeof?)
+        var newQuantity = quantityQuery - answers.quantity;
 
-          var newQuantity = quantityQuery - answers.quantity;
+          if (quantityQuery >= answers.quantity) {
 
-          if (quantityQuery >= answers.quantity) { //
-
-            con.query('UPDATE products SET ? WHERE ?',
+            con.query('UPDATE products SET ? WHERE ?', //SET = column
               [{
               stock_quantity: newQuantity,
               },
@@ -74,15 +75,16 @@ function orderProduct() {
               }],
               function(err, res) {
                 if (err) throw err;
-            console.log("Your order has been placed.");
-              }
-            )
-          } else {
-            console.log("Insufficient stock quantity.");
-              };
-            });
-        });
-// });
+                var totalPrice = answers.quantity * quantityQuery;
+                console.log("The total price of your order will be $" + totalPrice + ".00");
+                console.log("Your order has been placed.");
+                totalPrice = 0;
+                }); // query endtag
+                } else {
+                console.log("Insufficient stock quantity.");
+                };
+      });
+  });
 }; // orderProduct endtag
 
 
