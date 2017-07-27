@@ -65,12 +65,43 @@ function addInventory (){
    }
  ]).then(function(answers){
    console.log(answers);
-    var stockQuery = con.query('UPDATE products SET stock_quantity = ? WHERE id = ?', [answers.quantity, answers.id], function(err, res) {
+    con.query('UPDATE products SET stock_quantity = ? WHERE id = ?', [answers.quantity, answers.id], function(err, res) {
         if (err) throw err;
          }); // stockQuery endtag
        }); // then function endtag
 };
 
 function addProduct(){
+  inquirer.prompt([
+    {
+      name: 'product',
+      message: 'Enter product to add to database.'
+    },
+    {
+      name: 'department',
+      message: 'Enter the department of this product.'
+    },
+    {
+      name: 'price',
+      message: 'Enter the price of this product.'
+    },
+    {
+      name: 'stockQuantity',
+      message: 'Enter the stock quantity of this product.'
+    }
+  ]).then(function(answers) {
 
+  con.query('INSERT INTO products set ?',
+   [
+    {
+      product_name: answers.product,
+      department_name: answers.department,
+      price: answers.price,
+      stock_quantity: answers.stockQuantity
+    }
+  ], function(err, res){
+      if (err) throw err;
+      console.log(res);
+    });
+  });
 };
