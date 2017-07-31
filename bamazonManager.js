@@ -1,5 +1,7 @@
 var inquirer = require('inquirer');
 var mysql = require('mysql');
+var chalk = require('chalk');
+var table = require('table');
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -21,7 +23,11 @@ inquirer.prompt([
     type: "list",
     name: "managerChoice",
     message: "What would you like to do?",
-    choices: ["View products for sale.", "View low inventory.", "Add to inventory.", "Add new product.", "I'm done for now."]
+    choices: ["View products for sale.",
+    "View low inventory.",
+    "Add to inventory.",
+    "Add new product.",
+    "I'm done for now."]
   }
 ]).then(function(answers){
     if (answers.managerChoice === 'View products for sale.') {
@@ -46,7 +52,7 @@ function viewProducts (){
 };
 
 function lowInventory (){
-  console.log("These items have 5 or fewer products in stock.")
+  console.log(chalk.green("These items have 5 or fewer products in stock."));
   con.query("SELECT * FROM products WHERE stock_quantity < 6", function(err, res){
     if (err) throw err;
     console.log(res);
@@ -99,9 +105,21 @@ function addProduct(){
       price: answers.price,
       stock_quantity: answers.stockQuantity
     }
-  ], function(err, res){
+  ], function(err, res, answers){
       if (err) throw err;
-      console.log(res);
+      // console.log(res);
+      // Optional table below. Currently throws ERROR = "table not defined".
+      // Use console.table npm package!
+      // let data,
+      //     output;
+      //
+      //     data =
+      //     [
+      //       ['product_name', 'department_name', 'price', 'stock_quantity'],
+      //       [answers.product, answers.department, answers.price, answers.stockQuantity]
+      //     ];
+      //     output = table(data);
+      //     console.log(output);
     });
   });
 };
