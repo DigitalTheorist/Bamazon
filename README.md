@@ -6,4 +6,4 @@ Below is a sampling of how the app will operate.
 
 On the customer app
 
-![Screenshot](customer1.png)
+![Screenshot](Screenshots/customer1.png)
